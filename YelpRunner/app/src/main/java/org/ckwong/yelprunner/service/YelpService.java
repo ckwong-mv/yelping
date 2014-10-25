@@ -40,11 +40,17 @@ public class YelpService {
     private final OAuthService service;
     private final Token accessToken;
 
+    static private final YelpService gInstance = new YelpService();
+
+    public YelpService getInstance() {
+        return gInstance;
+    }
+
     /**
      * Setup the Yelp API OAuth credentials.
      *
      */
-    public YelpService() {
+    private YelpService() {
         this.service = new ServiceBuilder().provider(TwoStepOAuth.class).
                 apiKey(CONSUMER_KEY).apiSecret(CONSUMER_SECRET).build();
         this.accessToken = new Token(TOKEN, TOKEN_SECRET);
@@ -104,9 +110,9 @@ public class YelpService {
             if (callback.isCanceled())
                 return null;
 
-            int responseCode = response.getCode();
-            if (responseCode != 200) {
-                serviceError = new HttpResponseError(responseCode);
+            if (!response.isSuccessful()) {
+                // TODO: return the error stream as error message
+                serviceError = new HttpResponseError(response.getCode());
                 return null;
             }
 
@@ -128,7 +134,7 @@ public class YelpService {
         }
 
         @Override
-        protected void onPostExecute(final Result result) {
+        protected void onPostExecute(Result result) {
             if (callback.isCanceled())
                 return;
 
