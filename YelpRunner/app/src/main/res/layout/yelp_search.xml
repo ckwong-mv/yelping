@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_margin="8dp"
+    >
+
+    <LinearLayout
+        android:id="@+id/findSection"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/goButton"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="Find"
+            android:textStyle="bold"
+            android:id="@+id/findLabel"
+            android:layout_gravity="center_vertical" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:id="@+id/findField"
+            android:layout_gravity="center_vertical"
+            android:hint="e.g. tacos, Max's" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/nearSection"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/findSection"
+        android:layout_toLeftOf="@id/goButton"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="Near"
+            android:textStyle="bold"
+            android:id="@+id/nearLabel"
+            android:layout_gravity="center_vertical" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:id="@+id/nearField"
+            android:layout_gravity="center_vertical"
+            android:hint="e.g. Mountain View, CA" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@id/goButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/findSection"
+        android:layout_alignBottom="@id/nearSection"
+        android:layout_marginLeft="8dp"
+        android:text="Go"
+        android:textStyle="bold|italic"
+        />
+
+    <ListView
+        android:id="@+id/resultList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nearSection"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="4dp"
+        />
+
+    <ProgressBar
+        android:id="@+id/searchProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nearSection"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        />
+
+
+</RelativeLayout>
