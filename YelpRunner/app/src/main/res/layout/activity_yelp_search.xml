@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/yelpSearch"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:layout_margin="8dp"
     >
@@ -24,10 +25,10 @@
             android:layout_gravity="center_vertical" />
 
         <EditText
+            android:id="@+id/findField"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:id="@+id/findField"
             android:layout_gravity="center_vertical"
             android:hint="e.g. tacos, Max's" />
 
@@ -53,10 +54,10 @@
             android:layout_gravity="center_vertical" />
 
         <EditText
+            android:id="@+id/nearField"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:id="@+id/nearField"
             android:layout_gravity="center_vertical"
             android:hint="e.g. Mountain View, CA" />
 

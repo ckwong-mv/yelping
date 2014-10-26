@@ -1,6 +1,7 @@
 package org.ckwong.yelprunner.service;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -16,6 +17,7 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -42,7 +44,7 @@ public class YelpService {
 
     static private final YelpService gInstance = new YelpService();
 
-    public YelpService getInstance() {
+    static public YelpService getInstance() {
         return gInstance;
     }
 
@@ -111,11 +113,26 @@ public class YelpService {
                 return null;
 
             if (!response.isSuccessful()) {
-                // TODO: return the error stream as error message
+
+                StringBuilder buf = new StringBuilder();
+                buf.append("response message : " + response.getMessage());
+
+                InputStream inputStream = response.getStream();
+                if (inputStream != null) {
+                    try {
+                        buf.append(", stream : " + inputStreamToString(inputStream));
+                    } catch (IOException e) {
+                        // ignore
+                    }
+                }
+
                 serviceError = new HttpResponseError(response.getCode());
+                serviceError.setMessage(buf.toString());
                 return null;
             }
 
+//            String body = response.getBody();
+//            Log.e("chee - response body", body);
             InputStream responseStream = response.getStream();
 
             try {
@@ -142,6 +159,25 @@ public class YelpService {
                 callback.onFailure(serviceError);
             else
                 callback.onSuccess(result);
+        }
+    }
+
+    static String inputStreamToString(InputStream orig) throws IOException {
+        BufferedReader bufferedReader = null;
+        try {
+            StringBuilder sb = new StringBuilder();
+            bufferedReader = new BufferedReader(new InputStreamReader(orig), 8192);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+
+            return sb.toString();
+
+        } finally {
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
         }
     }
 

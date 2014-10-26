@@ -13,7 +13,7 @@ public class YelpBusiness {
     String displayPhone;
     String id;
     String imageUrl;
-    List<String> displayAddress;
+    YelpLocation location;
 
     String name;
     String phone;
@@ -43,8 +43,8 @@ public class YelpBusiness {
         return imageUrl;
     }
 
-    public List<String> getDisplayAddress() {
-        return displayAddress;
+    public YelpLocation getLocation() {
+        return location;
     }
 
     public String getName() {
@@ -82,7 +82,7 @@ public class YelpBusiness {
                 ", displayPhone='" + displayPhone + '\'' +
                 ", id='" + id + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
-                ", displayAddress=" + displayAddress +
+                ", location=" + location +
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", reviewCount=" + reviewCount +
