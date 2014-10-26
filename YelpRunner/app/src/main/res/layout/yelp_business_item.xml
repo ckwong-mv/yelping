@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/businessImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerInside"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="4dp"
+            />
+
+        <TextView
+            android:id="@+id/businessName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/businessImage"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:ellipsize="end"
+            android:text="Test Name"
+            />
+
+        <TextView
+            android:id="@+id/businessAddr0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/businessImage"
+            android:layout_below="@id/businessName"
+            android:textSize="18sp"
+            android:ellipsize="end"
+            android:text="12345 Main Street"
+            />
+
+        <TextView
+            android:id="@+id/businessAddr1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/businessImage"
+            android:layout_below="@id/businessAddr0"
+            android:textSize="18sp"
+            android:ellipsize="end"
+            android:text="Mountain View, CA 94040"
+            />
+
+        <TextView
+            android:id="@+id/businessCategories"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/businessImage"
+            android:layout_below="@id/businessAddr1"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            android:ellipsize="end"
+            android:text="Coffee and Tea"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

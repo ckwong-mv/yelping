@@ -80,17 +80,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/nearSection"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="4dp"
+        android:padding="4dp"
         />
 
     <ProgressBar
         android:id="@+id/searchProgress"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/nearSection"
         android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
         />
-
 
 </RelativeLayout>
