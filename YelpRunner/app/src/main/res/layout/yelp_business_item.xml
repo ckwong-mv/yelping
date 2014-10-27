@@ -67,6 +67,7 @@
             android:textStyle="italic"
             android:ellipsize="end"
             android:singleLine="true"
+            android:textColor="@android:color/secondary_text_light"
             android:text="Coffee and Tea"
             />
 

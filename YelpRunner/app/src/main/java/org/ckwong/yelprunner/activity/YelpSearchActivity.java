@@ -3,6 +3,9 @@ package org.ckwong.yelprunner.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
@@ -21,6 +24,7 @@ import org.ckwong.yelprunner.adapter.YelpBusinessAdapter;
 import org.ckwong.yelprunner.service.ServiceCallback;
 import org.ckwong.yelprunner.service.ServiceError;
 import org.ckwong.yelprunner.service.YelpService;
+import org.ckwong.yelprunner.storage.SettingStore;
 import org.ckwong.yelprunner.util.ViewHolder;
 
 public class YelpSearchActivity extends Activity {
@@ -43,31 +47,59 @@ public class YelpSearchActivity extends Activity {
         ListView listView = (ListView) holder.getView(R.id.resultList);
         listView.setAdapter(businessAdapter);
 
-        bindUiListeners();
+        initUi();
     }
 
-    void bindUiListeners() {
+    void initUi() {
+        final EditText findField = (EditText) holder.getView(R.id.findField);
+        final EditText nearField = (EditText) holder.getView(R.id.nearField);
+
+        SettingStore settingStore = SettingStore.getInstance();
+
+        String text = settingStore.getFindValue();
+        if (!TextUtils.isEmpty(text)) {
+            findField.setText(text);
+        }
+
+        text = settingStore.getNearValue();
+        if (!TextUtils.isEmpty(text)) {
+            nearField.setText(text);
+        }
+
+        initGoButton();
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                initGoButton();
+            }
+        };
+
+        findField.addTextChangedListener(textWatcher);
+        nearField.addTextChangedListener(textWatcher);
+
         final Context context = this;
         Button goButton = (Button) holder.getView(R.id.goButton);
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText findField = (EditText) holder.getView(R.id.findField);
                 String find = findField.getText().toString();
-                if (find == null || find.length() == 0) {
-                    Toast toast = Toast.makeText(context, "Find field can't be empty", Toast.LENGTH_LONG);
-                    toast.show();
-                }
-
-                EditText nearField = (EditText) holder.getView(R.id.nearField);
                 String near = nearField.getText().toString();
-                if (near == null || near.length() == 0) {
-                    Toast toast = Toast.makeText(context, "Near field can't be empty", Toast.LENGTH_LONG);
-                    toast.show();
-                }
 
                 hideKeyboard(findField);
                 hideKeyboard(nearField);
+
+                SettingStore settingStore = SettingStore.getInstance();
+                settingStore.setFindValue(find);
+                settingStore.setNearValue(near);
 
                 final ProgressBar progressBar = (ProgressBar) holder.getView(R.id.searchProgress);
                 progressBar.setVisibility(View.VISIBLE);
@@ -100,6 +132,17 @@ public class YelpSearchActivity extends Activity {
 
             }
         });
+    }
+
+    void initGoButton() {
+        EditText findField = (EditText) holder.getView(R.id.findField);
+        EditText nearField = (EditText) holder.getView(R.id.nearField);
+
+        Button goButton = (Button) holder.getView(R.id.goButton);
+
+        boolean enabled = findField.getText().toString().length() > 0 &&
+                nearField.getText().toString().length() > 0;
+        goButton.setEnabled(enabled);
     }
 
     void hideKeyboard(EditText editText) {
