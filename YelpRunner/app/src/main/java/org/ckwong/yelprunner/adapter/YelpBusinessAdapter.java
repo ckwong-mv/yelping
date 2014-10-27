@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
 /**
  * Created by ckwong on 10/26/14.
  */
-public class YelpBusinessAdapter extends BaseAdapter implements ImageLoader.CancelCallback {
+public class YelpBusinessAdapter extends BaseAdapter implements ImageLoader.Callback {
 
     LayoutInflater inflater;
     private YelpService.Result result;
@@ -117,7 +117,7 @@ public class YelpBusinessAdapter extends BaseAdapter implements ImageLoader.Canc
 class ImageLoader {
     static ExecutorService gExecutorService = Executors.newFixedThreadPool(5);
 
-    static void load(final ImageView imageView, final String imageUrl, final CancelCallback callback) {
+    static void load(final ImageView imageView, final String imageUrl, final Callback callback) {
         imageView.setImageBitmap(null);
         imageView.setTag(R.id.businessImage, imageUrl);
 
@@ -149,7 +149,7 @@ class ImageLoader {
                 }
             }
 
-            boolean isLoadingAborted(ImageView imageView, String imageUrl, CancelCallback callback) {
+            boolean isLoadingAborted(ImageView imageView, String imageUrl, Callback callback) {
                 if (callback.isCanceled())
                     return true;
 
@@ -162,7 +162,7 @@ class ImageLoader {
         gExecutorService.execute(loadRunner);
     }
 
-    static interface CancelCallback {
+    static interface Callback {
         boolean isCanceled();
     }
 }

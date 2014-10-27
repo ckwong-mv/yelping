@@ -2,17 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.ckwong.yelprunner" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".YelpApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
-        </activity>
         <activity
             android:name=".activity.YelpSearchActivity"
             android:label="@string/title_activity_yelp_search" >
@@ -23,11 +20,5 @@
             </intent-filter>
         </activity>
     </application>
-
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

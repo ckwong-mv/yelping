@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.ckwong.yelprunner.R;
@@ -40,10 +37,9 @@ public class YelpSearchActivity extends Activity {
         setContentView(R.layout.activity_yelp_search);
 
         inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-
         holder = new ViewHolder(findViewById(R.id.yelpSearch));
-
         businessAdapter = new YelpBusinessAdapter(this);
+
         ListView listView = (ListView) holder.getView(R.id.resultList);
         listView.setAdapter(businessAdapter);
 
@@ -54,7 +50,7 @@ public class YelpSearchActivity extends Activity {
         final EditText findField = (EditText) holder.getView(R.id.findField);
         final EditText nearField = (EditText) holder.getView(R.id.nearField);
 
-        SettingStore settingStore = SettingStore.getInstance();
+        final SettingStore settingStore = SettingStore.getInstance();
 
         String text = settingStore.getFindValue();
         if (!TextUtils.isEmpty(text)) {
@@ -91,45 +87,43 @@ public class YelpSearchActivity extends Activity {
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String find = findField.getText().toString();
-                String near = nearField.getText().toString();
-
                 hideKeyboard(findField);
                 hideKeyboard(nearField);
 
-                SettingStore settingStore = SettingStore.getInstance();
+                String find = findField.getText().toString();
+                String near = nearField.getText().toString();
                 settingStore.setFindValue(find);
                 settingStore.setNearValue(near);
 
                 final ProgressBar progressBar = (ProgressBar) holder.getView(R.id.searchProgress);
                 progressBar.setVisibility(View.VISIBLE);
 
-                YelpService.getInstance().searchBusinesses(find, near, 20,
-                        new ServiceCallback<YelpService.Result, ServiceError>() {
+                ServiceCallback serviceCallback = new ServiceCallback<YelpService.Result, ServiceError>() {
 
-                            @Override
-                            public void onSuccess(YelpService.Result result) {
-                                progressBar.setVisibility(View.GONE);
+                    @Override
+                    public void onSuccess(YelpService.Result result) {
+                        progressBar.setVisibility(View.GONE);
 
-                                businessAdapter.setYelpServiceResult(result);
-                                businessAdapter.notifyDataSetChanged();
-                            }
+                        businessAdapter.setYelpServiceResult(result);
+                        businessAdapter.notifyDataSetChanged();
+                    }
 
-                            @Override
-                            public void onFailure(ServiceError failureObj) {
-                                progressBar.setVisibility(View.GONE);
+                    @Override
+                    public void onFailure(ServiceError failureObj) {
+                        progressBar.setVisibility(View.GONE);
 
-                                Toast toast = Toast.makeText(context, "Error in searching : " +
-                                        failureObj.getMessage(), Toast.LENGTH_LONG);
-                                toast.show();
-                            }
+                        Toast toast = Toast.makeText(context, "Error in searching : " +
+                                failureObj.getMessage(), Toast.LENGTH_LONG);
+                        toast.show();
+                    }
 
-                            @Override
-                            public boolean isCanceled() {
-                                return canceled;
-                            }
-                        });
+                    @Override
+                    public boolean isCanceled() {
+                        return canceled;
+                    }
+                };
 
+                YelpService.getInstance().searchBusinesses(find, near, 20, serviceCallback);
             }
         });
     }

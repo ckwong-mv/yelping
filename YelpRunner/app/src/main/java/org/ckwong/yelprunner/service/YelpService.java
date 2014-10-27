@@ -1,7 +1,6 @@
 package org.ckwong.yelprunner.service;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -17,7 +16,6 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -74,8 +72,7 @@ public class YelpService {
      * @return <tt>OAuthRequest</tt>
      */
     private OAuthRequest createOAuthRequest(String path) {
-        OAuthRequest request = new OAuthRequest(Verb.GET, "http://" + API_HOST + path);
-        return request;
+        return new OAuthRequest(Verb.GET, "http://" + API_HOST + path);
     }
 
     class QueryApiTask extends AsyncTask<Void, Void, Result> {
@@ -116,23 +113,13 @@ public class YelpService {
 
                 StringBuilder buf = new StringBuilder();
                 buf.append("response message : " + response.getMessage());
-
-                InputStream inputStream = response.getStream();
-                if (inputStream != null) {
-                    try {
-                        buf.append(", stream : " + inputStreamToString(inputStream));
-                    } catch (IOException e) {
-                        // ignore
-                    }
-                }
+                buf.append(", body : " + response.getBody());
 
                 serviceError = new HttpResponseError(response.getCode());
                 serviceError.setMessage(buf.toString());
                 return null;
             }
 
-//            String body = response.getBody();
-//            Log.e("chee - response body", body);
             InputStream responseStream = response.getStream();
 
             try {
@@ -140,7 +127,8 @@ public class YelpService {
                 Gson gson = new GsonBuilder().setFieldNamingPolicy(
                         FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
-                return gson.fromJson(reader, Result.class);
+                Result result = gson.fromJson(reader, Result.class);
+                return result;
 
             } catch (IOException exp) {
                 serviceError = new ServiceError();
@@ -159,25 +147,6 @@ public class YelpService {
                 callback.onFailure(serviceError);
             else
                 callback.onSuccess(result);
-        }
-    }
-
-    static String inputStreamToString(InputStream orig) throws IOException {
-        BufferedReader bufferedReader = null;
-        try {
-            StringBuilder sb = new StringBuilder();
-            bufferedReader = new BufferedReader(new InputStreamReader(orig), 8192);
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                sb.append(line);
-            }
-
-            return sb.toString();
-
-        } finally {
-            if (bufferedReader != null) {
-                bufferedReader.close();
-            }
         }
     }
 

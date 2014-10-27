@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_gravity="center_vertical"
+            android:singleLine="true"
             android:hint="e.g. tacos, Max's" />
 
     </LinearLayout>
@@ -59,6 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_gravity="center_vertical"
+            android:singleLine="true"
             android:hint="e.g. Mountain View, CA" />
 
     </LinearLayout>
@@ -92,6 +94,7 @@
         android:layout_below="@id/nearSection"
         android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
+        style="@android:style/Widget.ProgressBar.Large"
         />
 
 </RelativeLayout>
